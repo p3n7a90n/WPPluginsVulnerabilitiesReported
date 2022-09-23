@@ -1,4 +1,4 @@
-# Code Injection in WP ALL Export (Non-Admin)
+# Code Injection in WP ALL Export Pro(Non-Admin)
 
 **Severity:** High
 
