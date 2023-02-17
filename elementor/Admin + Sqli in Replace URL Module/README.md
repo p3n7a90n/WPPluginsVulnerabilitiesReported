@@ -46,9 +46,9 @@ Above payload will update the meta_key to key4 of meta_id=999999
     
     wp-content/plugins/elementor/includes/utils.php#L172-184
 
-** Exploit**
+**Exploit**
 
-```python
+```python3
 import requests as r 
 import string
 from requests import Timeout
